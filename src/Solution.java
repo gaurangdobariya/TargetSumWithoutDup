@@ -1,33 +1,37 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 import java.util.*;
 
 public class Solution {
 
-    public List<int[]> allTwoSums(int[] nums, int target) {
-        List<int[]> result = new ArrayList<>();
-        Map<Integer, Integer> map = new HashMap<>();
+    public static List<List<Integer>> findSumPairs(
+            int[] numbers,
+            int target) {
+        Set<Integer> seen = new HashSet<>();
+        Set<List<Integer>> res = new HashSet<>();
 
-        for (int i = 0; i < nums.length; i++) {
-            int complement = target - nums[i];
-            if (map.containsKey(complement)) {
-                result.add(new int[]{map.get(complement), i});
+        for (int num : numbers) {
+            int complement = target - num;
+            if (seen.contains(complement)) {
+                List<Integer> pair =
+                        Arrays.asList(
+                                Math.min(num, complement),
+                                Math.max(num, complement));
+                res.add(pair);
             }
-            // Update map after checking to avoid duplicate use of the same index
-            map.put(nums[i], i);
+            seen.add(num);
         }
-        return result;
+
+        return new ArrayList<>(res);
     }
 
     public static void main(String[] args) {
         Solution sol = new Solution();
-        int[] nums = {2, 7, 11, 15, 1, 8};
-        int target = 9;
+        int[] nums = {2, 4, 3, 7, 1, 5};
+        int target = 6;
 
-        List<int[]> pairs = sol.allTwoSums(nums, target);
-        for (int[] pair : pairs) {
-            System.out.println("Pair found at indices: " + pair[0] + " and " + pair[1] +
-                    " (values: " + nums[pair[0]] + ", " + nums[pair[1]] + ")");
+        List<List<Integer>> pairs = Solution.findSumPairs(nums, target);
+        for (List<Integer> pair : pairs) {
+            System.out.println(
+                    "Pair found : " + pair.get(0) + " and " + pair.get(1) );
         }
     }
 }
